@@ -1,11 +1,5 @@
 package pr0gramm
 
-const (
-  SFW ContentType = 1
-  NSFW ContentType = 2
-  NSFL ContentType = 4
-)
-
 type ItemsRequest struct {
   Older, Newer, Around Id
   Tags, User, Likes    *string

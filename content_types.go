@@ -3,6 +3,12 @@ package pr0gramm
 type ContentType int
 type ContentTypes []ContentType
 
+const (
+  SFW ContentType = 1
+  NSFW ContentType = 2
+  NSFL ContentType = 4
+)
+
 func (types ContentTypes) AsFlags() int {
   var result int
   for _, val := range types {
