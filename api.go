@@ -56,3 +56,18 @@ func GetItemInfo(id uint64) (ItemInfo, error) {
   err := apiGet(uri, &response)
   return response, err
 }
+
+func GetUserInfoSfw(user string) (UserInfo, error) {
+  return GetUserInfo(user, ContentTypes{SFW})
+}
+
+func GetUserInfo(user string, flags ContentTypes) (UserInfo, error) {
+  query := make(url.Values)
+  query.Set("name", user)
+  query.Set("flags", strconv.Itoa(flags.AsFlags()))
+  uri := makeUrl("/profile/info?" + query.Encode())
+
+  var response UserInfo
+  err := apiGet(uri, &response)
+  return response, err
+}
