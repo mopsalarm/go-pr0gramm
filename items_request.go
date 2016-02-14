@@ -9,11 +9,11 @@ const (
 type ItemsRequest struct {
   Older, Newer, Around Id
   Tags, User, Likes    *string
-  Flags                ContentTypes
+  ContentTypes         ContentTypes
 }
 
 func NewItemsRequest() ItemsRequest {
-  return ItemsRequest{Flags: ContentTypes{SFW}}
+  return ItemsRequest{ContentTypes: ContentTypes{SFW}}
 }
 
 func (req ItemsRequest) WithOlderThan(id Id) ItemsRequest {
@@ -53,6 +53,6 @@ func (req ItemsRequest) WithLikes(user string) ItemsRequest {
 }
 
 func (req ItemsRequest) WithFlags(flags []ContentType) ItemsRequest {
-  req.Flags = flags
+  req.ContentTypes = flags
   return req
 }

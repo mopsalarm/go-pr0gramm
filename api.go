@@ -26,7 +26,7 @@ func ParseId(value string) Id {
 
 func GetItems(req ItemsRequest) (Items, error) {
   query := make(url.Values)
-  query.Set("flags", strconv.Itoa(req.Flags.AsFlags()))
+  query.Set("flags", strconv.Itoa(req.ContentTypes.AsFlags()))
 
   if req.Older > 0 {
     query.Set("older", req.Older.ToString())
