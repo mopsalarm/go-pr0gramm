@@ -23,7 +23,7 @@ func (ct *Timestamp) UnmarshalJSON(b []byte) (err error) {
   return
 }
 
-func (ct *Timestamp) MarshalJSON() ([]byte, error) {
-  formatted := strconv.FormatInt(int64(ct.Second()), 10)
+func (ct Timestamp) MarshalJSON() ([]byte, error) {
+  formatted := strconv.FormatInt(int64(ct.Unix()), 10)
   return []byte(formatted), nil
 }

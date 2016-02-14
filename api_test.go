@@ -1,7 +1,6 @@
 package pr0gramm
 
 import (
-  "fmt"
   "testing"
 )
 
@@ -13,7 +12,7 @@ func TestGetItems(t *testing.T) {
     return
   }
 
-  fmt.Println(response)
+  t.Log(response)
 }
 
 func TestGetItem(t *testing.T) {
@@ -24,7 +23,7 @@ func TestGetItem(t *testing.T) {
     return
   }
 
-  fmt.Println(response)
+  t.Log(response)
 }
 
 func TestGetUser(t *testing.T) {
@@ -34,6 +33,6 @@ func TestGetUser(t *testing.T) {
     return
   }
 
-  fmt.Println(response)
+  t.Log(response)
 }
 

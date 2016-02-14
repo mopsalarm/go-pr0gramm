@@ -1,111 +1,115 @@
 package pr0gramm
 
+import "time"
+
+type Id uint64
+
 type Response struct {
   Timestamp    Timestamp `json:"ts"`
-  ResponseTime uint `json:"rt"`
+  ResponseTime time.Duration `json:"rt"`
   QueryCount   uint `json:"qt"`
 }
 
 type Item struct {
-  Id        uint64
-  Promoted  uint64
-  Up        uint
-  Down      uint
-  Created   Timestamp
-  Image     string
+  Id        Id `json:"id"`
+  Promoted  Id `json:"promoted"`
+  Up        uint `json:"up"`
+  Down      uint `json:"down"`
+  Created   Timestamp `json:"created"`
+  Image     string `json:"image"`
   Thumbnail string `json:"thumb"`
-  Fullsize  string
-  Source    string
-  Flags     int
-  User      string
-  Mark      int
+  Fullsize  string `json:"fullsize"`
+  Source    string `json:"source"`
+  Flags     int `json:"flags"`
+  User      string `json:"user"`
+  Mark      int `json:"mark"`
 }
 
 type Items struct {
   Response
 
-  Error   string
+  Error   *string `json:"error"`
   AtEnd   bool `json:"atEnd"`
   AtStart bool `json:"atStart"`
-  Items   []Item
+  Items   []Item `json:"items"`
 }
 
 type Tag struct {
-  Id         uint64
-  Confidence float64
-  Tag        string
+  Id         Id `json:"id"`
+  Confidence float64 `json:"confidence"`
+  Tag        string `json:"tag"`
 }
 
 type BaseComment struct {
-  Id      uint64
-  Created Timestamp
-  Up      uint
-  Down    uint
-  Content string
+  Id      Id `json:"id"`
+  Created Timestamp `json:"created"`
+  Up      uint `json:"up"`
+  Down    uint `json:"down"`
+  Content string `json:"content"`
 }
 
 type Comment struct {
   BaseComment
 
-  Mark    int
-  Parent  uint64
-  Name    string
-  Content string
+  Mark    int `json:"mark"`
+  Parent  uint64 `json:"parent"`
+  Name    string `json:"name"`
+  Content string `json:"content"`
 }
 
 type UserComment struct {
   // normally i would use BaseComment, but the api sends a lot of stuff as strings.
   // BaseComment
 
-  Id        uint64 `json:"id,string"`
+  Id        Id `json:"id,string"`
   Created   Timestamp `json:"id"`
   Up        uint `json:"up,string"`
   Down      uint `json:"down,string"`
-  Content   string
+  Content   string `json:"content"`
 
   Thumbnail string `json:"thumb"`
   ItemId    uint64 `json:"itemId,string"`
 }
 
 type ItemThumb struct {
-  Id        uint64 `json:"id,string"`
+  Id        Id `json:"id,string"`
   Thumbnail string `json:"thumb"`
 }
 
 type ItemInfo struct {
   Response
 
-  Comments []Comment
-  Tags     []Tag
+  Comments []Comment `json:"comments"`
+  Tags     []Tag `json:"tags"`
 }
 
 type InnerUserInfo struct {
-  Id         uint64
-  Mark       int
-  Name       string
-  Registered Timestamp
-  Score      int
-  Admin      uint
-  Banned     uint
+  Id         Id `json:"id"`
+  Mark       int `json:"mark"`
+  Name       string `json:"name"`
+  Registered Timestamp `json:"registered"`
+  Score      int `json:"score"`
+  Admin      uint `json:"admin"`
+  Banned     uint `json:"banned"`
 }
 
 type UserInfo struct {
   Response
 
-  CommentCount   uint
-  Comments       []UserComment
+  CommentCount   uint `json:"commentCount"`
+  Comments       []UserComment `json:"comments"`
 
-  FollowCount    uint
-  Following      bool
+  FollowCount    uint `json:"followCount"`
+  Following      bool `json:"following"`
 
-  LikeCount      uint
-  LikesArePublic bool
-  Likes          []ItemThumb
+  LikeCount      uint `json:"likeCount"`
+  LikesArePublic bool `json:"likesArePublic"`
+  Likes          []ItemThumb `json:"likes"`
 
-  TagCount       uint
+  TagCount       uint `json:"tagCount"`
 
-  UploadCount    uint
-  Uploads        []ItemThumb
+  UploadCount    uint `json:"uploadCount"`
+  Uploads        []ItemThumb `json:"uploads"`
 
-  User           InnerUserInfo
+  User           InnerUserInfo `json:"user"`
 }

@@ -7,11 +7,21 @@ import (
   "fmt"
 )
 
-type ContentType int
-type ContentTypes []ContentType
-
 func makeUrl(path string) string {
   return "http://pr0gramm.com/api/" + strings.TrimLeft(path, "/")
+}
+
+func (id Id) ToString() string {
+  return strconv.FormatInt(int64(id), 10)
+}
+
+func ParseId(value string) Id {
+  id, err := strconv.ParseInt(value, 10, 0)
+  if err != nil {
+    id = 0
+  }
+
+  return Id(id)
 }
 
 func GetItems(req ItemsRequest) (Items, error) {
@@ -19,27 +29,27 @@ func GetItems(req ItemsRequest) (Items, error) {
   query.Set("flags", strconv.Itoa(req.Flags.AsFlags()))
 
   if req.Older > 0 {
-    query.Set("older", strconv.Itoa(req.Older))
+    query.Set("older", req.Older.ToString())
   }
 
   if req.Newer > 0 {
-    query.Set("newer", strconv.Itoa(req.Newer))
+    query.Set("newer", req.Newer.ToString())
   }
 
   if req.Around > 0 {
-    query.Set("id", strconv.Itoa(req.Around))
+    query.Set("id", req.Around.ToString())
   }
 
-  if req.Tags != "" {
-    query.Set("tags", req.Tags)
+  if req.Tags != nil {
+    query.Set("tags", *req.Tags)
   }
 
-  if req.User != "" {
-    query.Set("user", req.User)
+  if req.User != nil {
+    query.Set("user", *req.User)
   }
 
-  if req.Likes != "" {
-    query.Set("likes", req.Likes)
+  if req.Likes != nil {
+    query.Set("likes", *req.Likes)
   }
 
   uri := makeUrl("/items/get?" + query.Encode())
