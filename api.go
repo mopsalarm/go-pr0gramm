@@ -59,7 +59,7 @@ func GetItems(req ItemsRequest) (Items, error) {
   return response, err
 }
 
-func GetItemInfo(id uint64) (ItemInfo, error) {
+func GetItemInfo(id Id) (ItemInfo, error) {
   uri := makeUrl(fmt.Sprintf("/items/info?itemId=%d", id))
 
   var response ItemInfo

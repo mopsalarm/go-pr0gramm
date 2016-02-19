@@ -1,6 +1,8 @@
 package pr0gramm
 
 import (
+  "io"
+  "io/ioutil"
   "net/http"
   "encoding/json"
 )
@@ -11,6 +13,10 @@ func apiGet(url string, target interface{}) error {
     return err
   }
 
-  defer response.Body.Close()
+  defer func() {
+    io.Copy(ioutil.Discard, response.Body)
+    response.Body.Close()
+  }()
+
   return json.NewDecoder(response.Body).Decode(target)
 }
