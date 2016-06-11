@@ -1,37 +1,36 @@
 package pr0gramm
 
-import "errors"
+type Consumer func(Item) (bool, error)
 
-type Stream struct {
-  req ItemsRequest
-  eof bool
+func Stream(req ItemsRequest, consume Consumer) error {
+	for {
+		items, err := GetItems(req)
+		if err != nil {
+			return err
+		}
+
+		for _, item := range items.Items {
+			if cont, err := consume(item); err != nil {
+				return err
+			} else if !cont {
+				return nil
+			}
+		}
+
+		if len(items.Items) == 0 || items.AtEnd {
+			return nil
+		}
+
+		req.Older = items.Items[len(items.Items)-1].Id
+	}
 }
 
-func NewStream(req ItemsRequest) Stream {
-  return Stream{req, false}
-}
-
-func (s *Stream) State() ItemsRequest {
-  return s.req
-}
-
-func (s *Stream) Next() (*Items, error) {
-  if ! s.More() {
-    return nil, errors.New("Already at end of feed")
-  }
-
-  items, err := GetItems(s.req)
-  if err == nil {
-    s.eof = items.AtEnd
-
-    if len(items.Items) > 0 {
-      s.req.Older = items.Items[len(items.Items) - 1].Id
-    }
-  }
-
-  return &items, err
-}
-
-func (s Stream) More() bool {
-  return !s.eof
+func ConsumeIf(predicate func(Item) bool, consumer func(Item) error) Consumer {
+	return func(item Item) (bool, error) {
+		if predicate(item) {
+			return true, consumer(item)
+		} else {
+			return false, nil
+		}
+	}
 }

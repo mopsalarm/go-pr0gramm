@@ -1,52 +1,52 @@
 package pr0gramm
 
 type ItemsRequest struct {
-  Older, Newer, Around Id
-  Tags, User, Likes    *string
-  ContentTypes         ContentTypes
+	Older, Newer, Around Id
+	Tags, User, Likes    *string
+	ContentTypes         ContentTypes
 }
 
 func NewItemsRequest() ItemsRequest {
-  return ItemsRequest{ContentTypes: ContentTypes{SFW}}
+	return ItemsRequest{ContentTypes: AllContentTypes}
 }
 
 func (req ItemsRequest) WithOlderThan(id Id) ItemsRequest {
-  req.Older = id
-  req.Newer = 0
-  req.Around = 0
-  return req
+	req.Older = id
+	req.Newer = 0
+	req.Around = 0
+	return req
 }
 
 func (req ItemsRequest) WithNewerThan(id Id) ItemsRequest {
-  req.Older = id
-  req.Newer = 0
-  req.Around = 0
-  return req
+	req.Older = id
+	req.Newer = 0
+	req.Around = 0
+	return req
 }
 
 func (req ItemsRequest) WithAround(id Id) ItemsRequest {
-  req.Older = 0
-  req.Newer = 0
-  req.Around = id
-  return req
+	req.Older = 0
+	req.Newer = 0
+	req.Around = id
+	return req
 }
 
 func (req ItemsRequest) WithTag(tag string) ItemsRequest {
-  req.Tags = &tag
-  return req
+	req.Tags = &tag
+	return req
 }
 
 func (req ItemsRequest) WithUser(user string) ItemsRequest {
-  req.User = &user
-  return req
+	req.User = &user
+	return req
 }
 
 func (req ItemsRequest) WithLikes(user string) ItemsRequest {
-  req.Likes = &user
-  return req
+	req.Likes = &user
+	return req
 }
 
 func (req ItemsRequest) WithFlags(flags []ContentType) ItemsRequest {
-  req.ContentTypes = flags
-  return req
+	req.ContentTypes = flags
+	return req
 }
