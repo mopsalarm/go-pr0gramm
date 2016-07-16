@@ -13,8 +13,8 @@ type Response struct {
 type Item struct {
 	Id        Id        `json:"id"`
 	Promoted  Id        `json:"promoted"`
-	Up        uint      `json:"up"`
-	Down      uint      `json:"down"`
+	Up        int       `json:"up"`
+	Down      int       `json:"down"`
 	Created   Timestamp `json:"created"`
 	Image     string    `json:"image"`
 	Thumbnail string    `json:"thumb"`
@@ -46,8 +46,8 @@ type Tag struct {
 type BaseComment struct {
 	Id      Id        `json:"id"`
 	Created Timestamp `json:"created"`
-	Up      uint      `json:"up"`
-	Down    uint      `json:"down"`
+	Up      int       `json:"up"`
+	Down    int       `json:"down"`
 	Content string    `json:"content"`
 }
 
@@ -55,7 +55,7 @@ type Comment struct {
 	BaseComment
 
 	Mark    int    `json:"mark"`
-	Parent  uint64 `json:"parent"`
+	Parent  Id     `json:"parent"`
 	Name    string `json:"name"`
 	Content string `json:"content"`
 }
@@ -66,12 +66,12 @@ type UserComment struct {
 
 	Id      Id        `json:"id,string"`
 	Created Timestamp `json:"id"`
-	Up      uint      `json:"up,string"`
-	Down    uint      `json:"down,string"`
+	Up      int       `json:"up,string"`
+	Down    int       `json:"down,string"`
 	Content string    `json:"content"`
 
 	Thumbnail string `json:"thumb"`
-	ItemId    uint64 `json:"itemId,string"`
+	ItemId    Id     `json:"itemId,string"`
 }
 
 type ItemThumb struct {
@@ -99,19 +99,19 @@ type InnerUserInfo struct {
 type UserInfo struct {
 	Response
 
-	CommentCount uint          `json:"commentCount"`
+	CommentCount int           `json:"commentCount"`
 	Comments     []UserComment `json:"comments"`
 
-	FollowCount uint `json:"followCount"`
+	FollowCount int  `json:"followCount"`
 	Following   bool `json:"following"`
 
-	LikeCount      uint        `json:"likeCount"`
+	LikeCount      int         `json:"likeCount"`
 	LikesArePublic bool        `json:"likesArePublic"`
 	Likes          []ItemThumb `json:"likes"`
 
-	TagCount uint `json:"tagCount"`
+	TagCount int `json:"tagCount"`
 
-	UploadCount uint        `json:"uploadCount"`
+	UploadCount int         `json:"uploadCount"`
 	Uploads     []ItemThumb `json:"uploads"`
 
 	User InnerUserInfo `json:"user"`
