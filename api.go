@@ -40,16 +40,16 @@ func GetItems(req ItemsRequest) (Items, error) {
 		query.Set("id", req.Around.ToString())
 	}
 
-	if req.Tags != nil {
-		query.Set("tags", *req.Tags)
+	if req.Tags != "" {
+		query.Set("tags", req.Tags)
 	}
 
-	if req.User != nil {
-		query.Set("user", *req.User)
+	if req.User != "" {
+		query.Set("user", req.User)
 	}
 
-	if req.Likes != nil {
-		query.Set("likes", *req.Likes)
+	if req.Likes != "" {
+		query.Set("likes", req.Likes)
 	}
 
 	uri := makeUrl("/items/get?" + query.Encode())

@@ -2,7 +2,8 @@ package pr0gramm
 
 type ItemsRequest struct {
 	Older, Newer, Around Id
-	Tags, User, Likes    *string
+	Tags, User, Likes    string
+	Random, Top          bool
 	ContentTypes         ContentTypes
 }
 
@@ -32,17 +33,27 @@ func (req ItemsRequest) WithAround(id Id) ItemsRequest {
 }
 
 func (req ItemsRequest) WithTag(tag string) ItemsRequest {
-	req.Tags = &tag
+	req.Tags = tag
 	return req
 }
 
 func (req ItemsRequest) WithUser(user string) ItemsRequest {
-	req.User = &user
+	req.User = user
 	return req
 }
 
 func (req ItemsRequest) WithLikes(user string) ItemsRequest {
-	req.Likes = &user
+	req.Likes = user
+	return req
+}
+
+func (req ItemsRequest) WithRandom(random bool) ItemsRequest {
+	req.Random = random
+	return req
+}
+
+func (req ItemsRequest) WithTopOnly(topOnly bool) ItemsRequest {
+	req.Top = topOnly
 	return req
 }
 
