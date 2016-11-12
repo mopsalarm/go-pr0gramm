@@ -14,7 +14,7 @@ func Stream(req ItemsRequest, consume Consumer) error {
 		}
 
 		return true, nil
-	});
+	})
 }
 
 func StreamPaged(req ItemsRequest, consume PageConsumer) error {
@@ -34,7 +34,7 @@ func StreamPaged(req ItemsRequest, consume PageConsumer) error {
 			return nil
 		}
 
-		req.Older = items.Items[len(items.Items) - 1].Id
+		req.Older = items.Items[len(items.Items)-1].Id
 	}
 }
 

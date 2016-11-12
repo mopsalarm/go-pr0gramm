@@ -7,10 +7,10 @@ const (
 	SFW  ContentType = 1
 	NSFW ContentType = 2
 	NSFL ContentType = 4
-	AUDIO ContentType = 8
+	NSFP ContentType = 8
 )
 
-var AllContentTypes = ContentTypes{SFW, NSFW, NSFL, AUDIO}
+var AllContentTypes = ContentTypes{SFW, NSFW, NSFL, NSFP}
 
 func (types ContentTypes) AsFlags() int {
 	var result int
@@ -37,8 +37,8 @@ func ToContentTypes(flags int) ContentTypes {
 	if flags&int(NSFL) != 0 {
 		result = append(result, NSFL)
 	}
-	if flags&int(AUDIO) != 0 {
-		result = append(result, AUDIO)
+	if flags&int(NSFP) != 0 {
+		result = append(result, NSFP)
 	}
 
 	return result
