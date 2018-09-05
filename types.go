@@ -26,6 +26,7 @@ type Item struct {
 	Width     int       `json:"width"`
 	Height    int       `json:"height"`
 	Audio     bool      `json:"audio"`
+	Deleted   int       `json:"deleted"`
 }
 
 type Items struct {
@@ -94,6 +95,9 @@ type InnerUserInfo struct {
 	Score      int       `json:"score"`
 	Admin      uint      `json:"admin"`
 	Banned     uint      `json:"banned"`
+
+	DeletedItemCount    uint `json:"itemDelete"`
+	DeletedCommentCount uint `json:"commentDelete"`
 }
 
 type UserInfo struct {
