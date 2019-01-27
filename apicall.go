@@ -82,8 +82,10 @@ func (sess *Session) apiPOST(path string, query url.Values, body interface{}, ta
 	cookies := sess.client.Jar.Cookies(&url.URL{Scheme: "https", Host: "pr0gramm.com", Path: "/api/"})
 	for _, cookie := range cookies {
 		if cookie.Name == "me" {
+			cookieValue, _ := url.QueryUnescape(cookie.Value)
+
 			var decoded struct{ Id string }
-			_ = json.Unmarshal([]byte(cookie.Value), &decoded)
+			_ = json.Unmarshal([]byte(cookieValue), &decoded)
 
 			if len(decoded.Id) > 16 {
 				nonce = decoded.Id[:16]
