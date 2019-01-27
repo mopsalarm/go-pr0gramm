@@ -47,7 +47,7 @@ func (sess *Session) apiGET(path string, query url.Values, target interface{}) e
 		uri += "?" + query.Encode()
 	}
 
-	response, err := http.DefaultClient.Get(uri)
+	response, err := sess.client.Get(uri)
 	if err != nil {
 		return err
 	}
@@ -98,7 +98,7 @@ func (sess *Session) apiPOST(path string, query url.Values, body interface{}, ta
 
 	bodyContent := bodyValues.Encode() + "&_nonce=" + nonce
 
-	response, err := http.DefaultClient.Post(
+	response, err := sess.client.Post(
 		uri, "application/x-www-form-urlencoded",
 		strings.NewReader(bodyContent))
 
