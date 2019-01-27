@@ -1,43 +1,29 @@
 package pr0gramm
 
 import (
-	"fmt"
 	"net/url"
 	"strconv"
 	"strings"
 )
 
-func makeUrl(path string) string {
-	return "http://pr0gramm.com/api/" + strings.TrimLeft(path, "/")
+func (id Id) String() string {
+	return strconv.Itoa(int(id))
 }
 
-func (id Id) ToString() string {
-	return strconv.FormatInt(int64(id), 10)
-}
-
-func ParseId(value string) Id {
-	id, err := strconv.ParseInt(value, 10, 0)
-	if err != nil {
-		id = 0
-	}
-
-	return Id(id)
-}
-
-func GetItems(req ItemsRequest) (Items, error) {
+func (sess *Session) GetItems(req ItemsRequest) (Items, error) {
 	query := make(url.Values)
 	query.Set("flags", strconv.Itoa(req.ContentTypes.AsFlags()))
 
 	if req.Older > 0 {
-		query.Set("older", req.Older.ToString())
+		query.Set("older", req.Older.String())
 	}
 
 	if req.Newer > 0 {
-		query.Set("newer", req.Newer.ToString())
+		query.Set("newer", req.Newer.String())
 	}
 
 	if req.Around > 0 {
-		query.Set("id", req.Around.ToString())
+		query.Set("id", req.Around.String())
 	}
 
 	if req.Tags != "" {
@@ -52,32 +38,42 @@ func GetItems(req ItemsRequest) (Items, error) {
 		query.Set("likes", req.Likes)
 	}
 
-	uri := makeUrl("/items/get?" + query.Encode())
-
 	var response Items
-	err := apiGet(uri, &response)
+	err := sess.apiGET("/items/get", query, &response)
 	return response, err
 }
 
-func GetItemInfo(id Id) (ItemInfo, error) {
-	uri := makeUrl(fmt.Sprintf("/items/info?itemId=%d", id))
+func (sess *Session) GetItemInfo(id Id) (ItemInfo, error) {
+	query := make(url.Values)
+	query.Set("itemId", strconv.Itoa(int(id)))
 
 	var response ItemInfo
-	err := apiGet(uri, &response)
+	err := sess.apiGET("/items/info", query, &response)
 	return response, err
 }
 
-func GetUserInfoSfw(user string) (UserInfo, error) {
-	return GetUserInfo(user, ContentTypes{SFW})
+func (sess *Session) GetUserInfoSfw(user string) (UserInfo, error) {
+	return sess.GetUserInfo(user, ContentTypes{SFW})
 }
 
-func GetUserInfo(user string, flags ContentTypes) (UserInfo, error) {
+func (sess *Session) GetUserInfo(user string, flags ContentTypes) (UserInfo, error) {
 	query := make(url.Values)
 	query.Set("name", user)
 	query.Set("flags", strconv.Itoa(flags.AsFlags()))
-	uri := makeUrl("/profile/info?" + query.Encode())
 
 	var response UserInfo
-	err := apiGet(uri, &response)
+	err := sess.apiGET("/profile/info", query, &response)
 	return response, err
+}
+
+func (sess *Session) TagsAdd(itemId Id, tags []string) error {
+	var body struct {
+		ItemId Id     `form:"itemId"`
+		Tags   string `form:"tags"`
+	}
+
+	body.ItemId = itemId
+	body.Tags = strings.Join(tags, ",")
+
+	return sess.apiPOST("/tags/add", nil, body, nil)
 }

@@ -120,3 +120,16 @@ type UserInfo struct {
 
 	User InnerUserInfo `json:"user"`
 }
+
+type LoginResponse struct {
+	Success    bool   `json:"success"`
+	Identifier string `json:"identifier"`
+
+	Ban *BanInfo `json:"ban,omitempty"`
+}
+
+type BanInfo struct {
+	Banned  bool      `json:"banned"`
+	Reason  string    `json:"reason"`
+	EndTime Timestamp `json:"till"`
+}

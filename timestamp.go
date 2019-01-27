@@ -27,3 +27,8 @@ func (ct Timestamp) MarshalJSON() ([]byte, error) {
 	formatted := strconv.FormatInt(int64(ct.Time.Unix()), 10)
 	return []byte(formatted), nil
 }
+
+func (ct Timestamp) MarshalText() (text []byte, err error) {
+	value := strconv.Itoa(int(ct.Unix()))
+	return []byte(value), nil
+}

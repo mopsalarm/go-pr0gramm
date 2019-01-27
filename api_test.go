@@ -1,13 +1,17 @@
 package pr0gramm
 
 import (
+	"net/http"
 	"testing"
 	"time"
 )
 
 func TestGetItems(t *testing.T) {
-	req := NewItemsRequest().WithUser("Mopsalarm")
-	response, err := GetItems(req)
+	req := NewItemsRequest().
+		WithFlags(ContentTypes{SFW}).
+		WithUser("Mopsalarm")
+
+	response, err := NewSession(http.Client{Timeout: 10 * time.Second}).GetItems(req)
 	if err != nil {
 		t.Error(err)
 		return
@@ -18,7 +22,7 @@ func TestGetItems(t *testing.T) {
 
 func TestGetItem(t *testing.T) {
 	id := Id(1143703)
-	response, err := GetItemInfo(id)
+	response, err := NewSession(http.Client{Timeout: 10 * time.Second}).GetItemInfo(id)
 	if err != nil {
 		t.Error(err)
 		return
@@ -28,23 +32,11 @@ func TestGetItem(t *testing.T) {
 }
 
 func TestGetUser(t *testing.T) {
-	response, err := GetUserInfoSfw("Bolok")
+	response, err := NewSession(http.Client{Timeout: 10 * time.Second}).GetUserInfoSfw("Bolok")
 	if err != nil {
 		t.Error(err)
 		return
 	}
 
 	t.Log(response)
-}
-
-func TestStream(t *testing.T) {
-	req := NewItemsRequest()
-
-	Stream(req, ConsumeIf(func(item Item) bool {
-		t.Logf("Checking: %f\n", time.Since(item.Created.Time).Minutes())
-		return time.Since(item.Created.Time).Minutes() < 10
-	}, func(item Item) error {
-		t.Logf("Accepted: %#v\n", item)
-		return nil
-	}))
 }
